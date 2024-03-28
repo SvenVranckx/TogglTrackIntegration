@@ -5,19 +5,34 @@ namespace Toggle.Track
 {
     public class Program
     {
-        public static async Task Main(string[] args)
+        public static async Task Main()
         {
             var token = GetApiToken();
-            using var context = new Context(token!);
+            using var context = new ApiContext(token!);
+
+            var me = await context.Me.Get(expand: true);
+            Console.WriteLine(me?.FullName);
+
+            var preferences = await context.Preferences.Get();
+            Console.WriteLine(preferences?.PgTimeZoneName);
 
             var organizations = await context.Organizations.Get();
-            Console.Write(organizations.Length);
+            Console.WriteLine(organizations.Length);
 
             var workspaces = await context.Workspaces.Get();
-            Console.Write(workspaces.Length);
+            Console.WriteLine(workspaces.Length);
+
+            var clients = await context.Clients.Get();
+            Console.WriteLine(clients.Length);
+
+            var projects = await context.Projects.Get();
+            Console.WriteLine(projects.Length);
+
+            var tags = await context.Tags.Get();
+            Console.WriteLine(tags.Length);
 
             var entries = await context.TimeEntries.Get();
-            Console.Write(entries.Length);
+            Console.WriteLine(entries.Length);
         }
 
         private static string GetApiToken()

@@ -10,6 +10,9 @@ namespace Toggle.Track.SDK.Models
         [JsonPropertyName("created_at")]
         public DateTimeOffset? CreatedAt { get; set; }
 
+        [JsonPropertyName("suspended_at")]
+        public DateTimeOffset? SuspendedAt { get; set; }
+
         [JsonPropertyName("is_multi_workspace_enabled")]
         public bool IsMultiWorkspaceEnabled { get; set; }
 

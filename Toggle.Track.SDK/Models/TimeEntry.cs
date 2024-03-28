@@ -42,5 +42,7 @@ namespace Toggle.Track.SDK.Models
 
         [JsonPropertyName("user_id")]
         public long UserId { get; set; }
+
+        public override string? ToString() => Description ?? base.ToString();
     }
 }

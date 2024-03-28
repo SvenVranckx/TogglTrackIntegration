@@ -19,11 +19,14 @@ namespace Toggle.Track.SDK.Models
         public override string? ToString() => Name ?? base.ToString();
     }
 
-    public class ConfigurationEntity : NamedEntity
+    public class ProtectedEntity : NamedEntity
     {
-        [JsonPropertyName("suspended_at")]
-        public DateTimeOffset? SuspendedAt { get; set; }
+        [JsonPropertyName("permissions")]
+        public string? Permissions { get; set; }
+    }
 
+    public class ConfigurationEntity : ProtectedEntity
+    {
         [JsonPropertyName("server_deleted_at")]
         public DateTimeOffset? ServerDeletedAt { get; set; }
     }

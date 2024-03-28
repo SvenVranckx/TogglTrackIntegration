@@ -79,6 +79,9 @@ namespace Toggle.Track.SDK.Models
         [JsonPropertyName("subscription")]
         public Subscription? Subscription { get; set; }
 
+        [JsonPropertyName("suspended_at")]
+        public DateTimeOffset? SuspendedAt { get; set; }
+
         [JsonPropertyName("hide_start_end_times")]
         public bool HideStartEndTimes { get; set; }
 
@@ -149,5 +152,4 @@ namespace Toggle.Track.SDK.Models
     public class CardDetails { }
     public class ContactDetail { }
     public class PaymentDetail { }
-    public class Period { }
 }

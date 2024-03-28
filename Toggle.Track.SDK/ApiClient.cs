@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Toggle.Track.SDK
 {
-    public class Client : IDisposable
+    internal class ApiClient : IDisposable
     {
         private readonly HttpClient _httpClient;
         private bool _disposed;
@@ -14,7 +14,7 @@ namespace Toggle.Track.SDK
 
         private static string GetRequestUrl(string query) => $"{ApiRoot}/{query.TrimStart('/')}";
 
-        public Client(string apiToken)
+        public ApiClient(string apiToken)
         {
             var handler = new HttpClientHandler();
             _httpClient = new HttpClient(handler, true)
@@ -34,15 +34,16 @@ namespace Toggle.Track.SDK
             _httpClient.Dispose();
         }
 
-        public async Task<string> GetString(string query)
+        public async Task<T?> GetEntity<T>(string query)
         {
-            return await _httpClient.GetStringAsync(GetRequestUrl(query));
+            var entity = await _httpClient.GetFromJsonAsync<T>(GetRequestUrl(query));
+            return entity;
         }
 
         public async Task<T[]> GetEntities<T>(string query)
         {
             var entities = await _httpClient.GetFromJsonAsync<T[]>(GetRequestUrl(query));
-            return entities ?? Array.Empty<T>();
+            return entities ?? [];
         }
     }
 }
