@@ -1,6 +1,4 @@
-﻿#pragma warning disable CS8603 // Possible null reference return.
-
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace Toggle.Track.SDK.Models
 {
@@ -18,7 +16,7 @@ namespace Toggle.Track.SDK.Models
         [JsonPropertyName("name")]
         public string? Name { get; set; }
 
-        public override string ToString() => Name ?? base.ToString();
+        public override string? ToString() => Name ?? base.ToString();
     }
 
     public class ConfigurationEntity : NamedEntity

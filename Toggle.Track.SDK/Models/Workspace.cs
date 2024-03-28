@@ -100,25 +100,50 @@ namespace Toggle.Track.SDK.Models
         [JsonPropertyName("auto_renew")]
         public bool AutoRenew { get; set; }
 
+        [JsonPropertyName("card_details")]
+        public CardDetails? CardDetails { get; set; }
 
-        /*
-         * auto_renew	boolean	-
-card_details	models.CardDetails	-
-company_id	integer	-
-contact_detail	models.ContactDetail	-
-created_at	string	-
-currency	string	-
-customer_id	integer	-
-deleted_at	string	-
-last_pricing_plan_id	integer	-
-organization_id	integer	-
-payment_details	models.PaymentDetail	-
-pricing_plan_id	integer	-
-renewal_at	string	-
-subscription_id	integer	-
-subscription_period	models.Period	-
-workspace_id	integer	-
-         */
+        [JsonPropertyName("company_id")]
+        public long CompanyId { get; set; }
+
+        [JsonPropertyName("contact_detail")]
+        public ContactDetail? ContactDetail { get; set; }
+
+        [JsonPropertyName("created_at")]
+        public DateTimeOffset? CreatedAt { get; set; }
+
+        [JsonPropertyName("currency")]
+        public string? Currency { get; set; }
+
+        [JsonPropertyName("customer_id")]
+        public long CustomerId { get; set; }
+
+        [JsonPropertyName("deleted_at")]
+        public DateTimeOffset? DeletedAt { get; set; }
+
+        [JsonPropertyName("last_pricing_plan_id")]
+        public long LastPricingPlanId { get; set; }
+
+        [JsonPropertyName("organization_id")]
+        public long OrganizationId { get; set; }
+
+        [JsonPropertyName("payment_details")]
+        public PaymentDetail? PaymentDetails { get; set; }
+
+        [JsonPropertyName("pricing_plan_id")]
+        public long PricingPlanId { get; set; }
+
+        [JsonPropertyName("renewal_at")]
+        public DateTimeOffset? RenewalAt { get; set; }
+
+        [JsonPropertyName("subscription_id")]
+        public long SubscriptionId { get; set; }
+
+        [JsonPropertyName("subscription_period")]
+        public Period? SubscriptionPeriod { get; set; }
+
+        [JsonPropertyName("workspace_id")]
+        public long WorkspaceId { get; set; }
     }
 
     public class CardDetails { }
