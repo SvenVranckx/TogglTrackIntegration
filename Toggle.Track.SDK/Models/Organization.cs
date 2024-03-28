@@ -2,36 +2,54 @@
 
 namespace Toggle.Track.SDK.Models
 {
-    public class Organization
+    public class Organization : ConfigurationEntity
     {
-        /*
-         *         "id": 8213090,
-        "name": "S3 Consulting",
-        "pricing_plan_id": 0,
-        "created_at": "2024-03-27T13:16:08.909564Z",
-        "at": "2024-03-27T13:27:31.798581Z",
-        "server_deleted_at": null,
-        "is_multi_workspace_enabled": false,
-        "suspended_at": null,
-        "user_count": 1,
-        "trial_info": {
-            "trial": false,
-            "trial_available": true,
-            "trial_end_date": null,
-            "next_payment_date": null,
-            "last_pricing_plan_id": null,
-            "can_have_trial": true
-        },
-        "is_unified": false,
-        "max_workspaces": 20,
-        "admin": true,
-        "owner": true
-         */
+        [JsonPropertyName("pricing_plan_id")]
+        public long PricingPlanId { get; set; }
 
-        [JsonPropertyName("id")]
-        public long Id { get; set; }
+        [JsonPropertyName("created_at")]
+        public DateTimeOffset? CreatedAt { get; set; }
 
-        [JsonPropertyName("name")]
-        public string? Name { get; set; }
+        [JsonPropertyName("is_multi_workspace_enabled")]
+        public bool IsMultiWorkspaceEnabled { get; set; }
+
+        [JsonPropertyName("user_count")]
+        public int UserCount { get; set; }
+
+        [JsonPropertyName("trial_info")]
+        public TrialInfo? TrialInfo { get; set; }
+
+        [JsonPropertyName("is_unified")]
+        public bool IsUnified { get; set; }
+
+        [JsonPropertyName("max_workspaces")]
+        public int MaxWorkspaces { get; set; }
+
+        [JsonPropertyName("admin")]
+        public bool Administrator { get; set; }
+
+        [JsonPropertyName("owner")]
+        public bool Owner { get; set; }
+    }
+
+    public class TrialInfo
+    {
+        [JsonPropertyName("trial")]
+        public bool Trial { get; set; }
+
+        [JsonPropertyName("trial_available")]
+        public bool TrialAvailable { get; set; }
+
+        [JsonPropertyName("trial_end_date")]
+        public DateTimeOffset? TrialEndDate { get; set; }
+
+        [JsonPropertyName("next_payment_date")]
+        public DateTimeOffset? NextPaymentDate { get; set; }
+
+        [JsonPropertyName("last_pricing_plan_id")]
+        public long? LastPricingPlanId { get; set; }
+
+        [JsonPropertyName("can_have_trial")]
+        public bool CanHaveTrial { get; set; }
     }
 }

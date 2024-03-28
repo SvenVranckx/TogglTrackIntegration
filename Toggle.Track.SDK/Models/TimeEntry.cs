@@ -2,11 +2,8 @@
 
 namespace Toggle.Track.SDK.Models
 {
-    public class TimeEntry
+    public class TimeEntry : Entity
     {
-        [JsonPropertyName("id")]
-        public long Id { get; set; }
-
         [JsonPropertyName("workspace_id")]
         public long? WorkspaceId { get; set; }
 
@@ -39,9 +36,6 @@ namespace Toggle.Track.SDK.Models
 
         [JsonPropertyName("duronly")]
         public bool DurationOnly { get; set; }
-
-        [JsonPropertyName("at")]
-        public DateTimeOffset? At { get; set; }
 
         [JsonPropertyName("server_deleted_at")]
         public DateTimeOffset? ServerDeletedAt { get; set; }
