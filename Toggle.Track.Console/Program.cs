@@ -10,7 +10,7 @@ namespace Toggle.Track
             var token = Console.ReadLine();
 
             using var client = new Client(token!);
-            var response = await client.GetString("/api/v9/me/time_entries");
+            var response = await client.GetString("me/time_entries");
 
             Console.WriteLine(response);
         }

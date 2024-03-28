@@ -11,6 +11,9 @@ namespace Toggle.Track.SDK
         private bool _disposed;
 
         private const string BaseUrl = @"https://api.track.toggl.com";
+        private const string ApiRoot = @"/api/v9";
+
+        private static string GetRequestUrl(string query) => $"{ApiRoot}/{query.TrimStart('/')}";
 
         public Client(string apiToken)
         {
@@ -32,9 +35,10 @@ namespace Toggle.Track.SDK
             _httpClient.Dispose();
         }
 
+
         public async Task<string> GetString(string query)
         {
-            return await _httpClient.GetStringAsync(query);
+            return await _httpClient.GetStringAsync(GetRequestUrl(query));
         }
     }
 }
