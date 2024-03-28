@@ -1,6 +1,5 @@
-﻿using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace Toggle.Track.SDK
@@ -35,10 +34,15 @@ namespace Toggle.Track.SDK
             _httpClient.Dispose();
         }
 
-
         public async Task<string> GetString(string query)
         {
             return await _httpClient.GetStringAsync(GetRequestUrl(query));
+        }
+
+        public async Task<T[]> GetEntities<T>(string query)
+        {
+            var entities = await _httpClient.GetFromJsonAsync<T[]>(GetRequestUrl(query));
+            return entities ?? Array.Empty<T>();
         }
     }
 }

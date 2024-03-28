@@ -9,10 +9,11 @@ namespace Toggle.Track
             Console.WriteLine("Enter API token:");
             var token = Console.ReadLine();
 
-            using var client = new Client(token!);
-            var response = await client.GetString("me/time_entries");
+            using var context = new Context(token!);
 
-            Console.WriteLine(response);
+            var entries = await context.TimeEntries.Get();
+            Console.Write(entries.Length);
+            
         }
     }
 }
