@@ -66,5 +66,63 @@ namespace Toggle.Track.SDK.Models
 
         [JsonPropertyName("logo_url")]
         public string? LogoUrl { get; set; }
+
+        [JsonPropertyName("ical_url")]
+        public string? ICalUrl { get; set; }
+
+        [JsonPropertyName("ical_enabled")]
+        public bool ICalEnabled { get; set; }
+
+        [JsonPropertyName("csv_upload")]
+        public CsvUpload? CsvUpload { get; set; }
+
+        [JsonPropertyName("subscription")]
+        public Subscription? Subscription { get; set; }
+
+        [JsonPropertyName("hide_start_end_times")]
+        public bool HideStartEndTimes { get; set; }
+
+        [JsonPropertyName("working_hours_in_minutes")]
+        public int? WorkingHoursInMinutes { get; set; }
     }
+
+    public class CsvUpload
+    {
+        [JsonPropertyName("at")]
+        public DateTimeOffset? At { get; set; }
+
+        [JsonPropertyName("log_id")]
+        public long LogId { get; set; }
+    }
+
+    public class Subscription
+    {
+        [JsonPropertyName("auto_renew")]
+        public bool AutoRenew { get; set; }
+
+
+        /*
+         * auto_renew	boolean	-
+card_details	models.CardDetails	-
+company_id	integer	-
+contact_detail	models.ContactDetail	-
+created_at	string	-
+currency	string	-
+customer_id	integer	-
+deleted_at	string	-
+last_pricing_plan_id	integer	-
+organization_id	integer	-
+payment_details	models.PaymentDetail	-
+pricing_plan_id	integer	-
+renewal_at	string	-
+subscription_id	integer	-
+subscription_period	models.Period	-
+workspace_id	integer	-
+         */
+    }
+
+    public class CardDetails { }
+    public class ContactDetail { }
+    public class PaymentDetail { }
+    public class Period { }
 }
