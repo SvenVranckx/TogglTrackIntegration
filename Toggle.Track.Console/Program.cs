@@ -11,9 +11,14 @@ namespace Toggle.Track
 
             using var context = new Context(token!);
 
+            var organizations = await context.Organizations.Get();
+            Console.Write(organizations.Length);
+
+            var workspaces = await context.Workspaces.Get();
+            Console.Write(workspaces.Length);
+
             var entries = await context.TimeEntries.Get();
             Console.Write(entries.Length);
-            
         }
     }
 }
