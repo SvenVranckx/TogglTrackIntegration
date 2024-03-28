@@ -1,14 +1,13 @@
-﻿using Toggle.Track.SDK;
+﻿using Microsoft.Extensions.Configuration;
+using Toggle.Track.SDK;
 
 namespace Toggle.Track
 {
-    public static class Program
+    public class Program
     {
         public static async Task Main(string[] args)
         {
-            Console.WriteLine("Enter API token:");
-            var token = Console.ReadLine();
-
+            var token = GetApiToken();
             using var context = new Context(token!);
 
             var organizations = await context.Organizations.Get();
@@ -19,6 +18,15 @@ namespace Toggle.Track
 
             var entries = await context.TimeEntries.Get();
             Console.Write(entries.Length);
+        }
+
+        private static string GetApiToken()
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddUserSecrets<Program>()
+                .Build();
+            var token = configuration["ApiToken"];
+            return token;
         }
     }
 }
