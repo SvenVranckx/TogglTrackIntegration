@@ -1,27 +1,29 @@
 ﻿namespace Toggle.Track.SDK
 {
-    public interface ISingleton<T>
+    public interface ISingleton<TEntity, TOptions>
+        where TEntity : class
+        where TOptions : class, IQueryOptions
     {
-        Task<T?> Get(bool expand = false);
+        Task<TEntity?> Get(TOptions? options = null);
     }
 
-    internal class Singleton<T> : ISingleton<T>
+    internal class Singleton<TEntity, TOptions> : ISingleton<TEntity, TOptions>
+        where TEntity : class
+        where TOptions : class, IQueryOptions
     {
         private readonly ApiClient _client;
         private readonly string _query;
-        private readonly string? _expansionParameter;
 
-        internal Singleton(ApiClient client, string query, string? expansionParameter)
+        internal Singleton(ApiClient client, string query)
         {
             _client = client;
             _query = query;
-            _expansionParameter = expansionParameter;
         }
 
-        public async Task<T?> Get(bool expand = false)
+        public async Task<TEntity?> Get(TOptions? options = null)
         {
-            var query = expand ? $"{_query}?{_expansionParameter}=true" : _query;
-            var entity = await _client.GetEntity<T>(query);
+            var query = QueryOptions.Apply(options, _query);
+            var entity = await _client.GetEntity<TEntity>(query);
             return entity;
         }
     }

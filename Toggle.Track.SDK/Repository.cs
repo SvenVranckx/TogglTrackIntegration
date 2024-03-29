@@ -1,12 +1,16 @@
 ﻿namespace Toggle.Track.SDK
 {
-    public interface IRepository<T>
+    public interface IRepository<TEntity, TOptions>
+        where TEntity : class
+        where TOptions : class, IQueryOptions
     {
-        Task<T?> Get(long id, bool expand = false);
-        Task<T[]> Get();
+        Task<TEntity?> Get(long id, TOptions? options = null);
+        Task<TEntity[]> Get(TOptions? options = null);
     }
 
-    internal class Repository<T> : IRepository<T>
+    internal class Repository<TEntity, TOptions> : IRepository<TEntity, TOptions>
+        where TEntity : class
+        where TOptions : class, IQueryOptions
     {
         private readonly ApiClient _client;
         private readonly string _query;
@@ -17,15 +21,17 @@
             _query = query;
         }
 
-        public async Task<T?> Get(long id, bool expand = false)
+        public async Task<TEntity?> Get(long id, TOptions? options = null)
         {
-            var entity = await _client.GetEntity<T>($"{_query}/{id}");
+            var query = QueryOptions.Apply(options, _query, id);
+            var entity = await _client.GetEntity<TEntity>(query);
             return entity;
         }
 
-        public async Task<T[]> Get()
+        public async Task<TEntity[]> Get(TOptions? options = null)
         {
-            var entities = await _client.GetEntities<T>(_query);
+            var query = QueryOptions.Apply(options, _query);
+            var entities = await _client.GetEntities<TEntity>(query);
             return entities;
         }
     }

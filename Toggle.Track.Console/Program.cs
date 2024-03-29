@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Toggle.Track.SDK;
+using Toggle.Track.SDK.Options;
 
 namespace Toggle.Track
 {
@@ -10,7 +11,7 @@ namespace Toggle.Track
             var token = GetApiToken();
             using var context = new ApiContext(token!);
 
-            var me = await context.Me.Get(expand: true);
+            var me = await context.Me.Get(UserOptions.WithRelatedData);
             Console.WriteLine(me?.FullName);
 
             var preferences = await context.Preferences.Get();
