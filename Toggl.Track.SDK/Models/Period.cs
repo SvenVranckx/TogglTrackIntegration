@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Toggle.Track.SDK.Models
+namespace Toggl.Track.SDK.Models
 {
     public class Period
     {

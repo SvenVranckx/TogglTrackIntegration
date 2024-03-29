@@ -1,4 +1,4 @@
-﻿namespace Toggle.Track.SDK
+﻿namespace Toggl.Track.SDK
 {
     public interface IQueryOptions
     {

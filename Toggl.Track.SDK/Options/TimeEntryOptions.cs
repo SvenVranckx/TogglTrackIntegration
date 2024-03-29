@@ -1,4 +1,4 @@
-﻿namespace Toggle.Track.SDK.Options
+﻿namespace Toggl.Track.SDK.Options
 {
     public class TimeEntryOptions : QueryOptionsImpl
     {

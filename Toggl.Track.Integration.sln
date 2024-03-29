@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toggle.Track.SDK", "Toggle.Track.SDK\Toggle.Track.SDK.csproj", "{9078737C-CC8A-4CAA-9392-C554344F400A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toggl.Track.SDK", "Toggl.Track.SDK\Toggl.Track.SDK.csproj", "{9078737C-CC8A-4CAA-9392-C554344F400A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toggle.Track.Console", "Toggle.Track.Console\Toggle.Track.Console.csproj", "{7D01B5E0-A0BE-47C2-A53D-842FBDFC332F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Toggl.Track.Console", "Toggl.Track.Console\Toggl.Track.Console.csproj", "{7D01B5E0-A0BE-47C2-A53D-842FBDFC332F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,8 +1,8 @@
-﻿using Toggle.Track.SDK.Models;
-using Toggle.Track.SDK.Options;
-using Task = Toggle.Track.SDK.Models.Task;
+﻿using Toggl.Track.SDK.Models;
+using Toggl.Track.SDK.Options;
+using Task = Toggl.Track.SDK.Models.Task;
 
-namespace Toggle.Track.SDK
+namespace Toggl.Track.SDK
 {
     public class ApiContext : IDisposable
     {

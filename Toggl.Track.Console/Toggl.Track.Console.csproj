@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Toggle.Track.SDK\Toggle.Track.SDK.csproj" />
+    <ProjectReference Include="..\Toggl.Track.SDK\Toggl.Track.SDK.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,7 +2,7 @@
 using System.Net.Http.Json;
 using System.Text;
 
-namespace Toggle.Track.SDK
+namespace Toggl.Track.SDK
 {
     internal class ApiClient : IDisposable
     {

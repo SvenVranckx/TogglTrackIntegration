@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Toggle.Track.SDK;
-using Toggle.Track.SDK.Options;
+using Toggl.Track.SDK;
+using Toggl.Track.SDK.Options;
 
-namespace Toggle.Track
+namespace Toggl.Track
 {
     public class Program
     {
