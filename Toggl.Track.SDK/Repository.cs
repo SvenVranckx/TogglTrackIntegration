@@ -1,4 +1,6 @@
-﻿namespace Toggl.Track.SDK
+﻿using System.Diagnostics;
+
+namespace Toggl.Track.SDK
 {
     public interface IRepository<TEntity, TQuery>
         where TEntity : class
@@ -31,6 +33,7 @@
         {
         }
 
+        [DebuggerStepThrough]
         private IQuery<TEntity> QueryOrDefault(TQuery? query) => query ?? _defaultQuery;
 
         public async Task<TEntity?> Get(long id, TQuery? query = null) =>

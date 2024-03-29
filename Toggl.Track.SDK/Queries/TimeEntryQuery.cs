@@ -27,9 +27,26 @@ namespace Toggl.Track.SDK.Queries
         public static readonly TimeEntryQuery WithMetaEntities = new(withMetaEntities: true);
         public static readonly TimeEntryQuery IncludeSharing = new(includeSharing: true);
 
+        public static TimeEntryQuery LastMonth => PreviousMonth(DateTime.Today);
+        public static TimeEntryQuery ThisMonth => CurrentMonth(DateTime.Today);
+
         public static TimeEntryQuery Since(DateTimeOffset since) => new(since: since);
         public static TimeEntryQuery Before(DateTimeOffset before) => new(before: before);
         public static TimeEntryQuery Between(DateTimeOffset start, DateTimeOffset end) => new(since: start, before: end);
+
+        public static TimeEntryQuery PreviousMonth(DateTime today)
+        {
+            var firstDayOfThisMonth = new DateTime(today.Year, today.Month, 1);
+            var firstDayOfPreviousMonth = firstDayOfThisMonth.AddMonths(-1);
+            return new(since: firstDayOfPreviousMonth, before: firstDayOfThisMonth.AddSeconds(-1.0));
+        }
+
+        public static TimeEntryQuery CurrentMonth(DateTime today)
+        {
+            var firstDayOfThisMonth = new DateTime(today.Year, today.Month, 1);
+            var firstDayOfNextMonth = firstDayOfThisMonth.AddMonths(1);
+            return new(since: firstDayOfThisMonth, before: firstDayOfNextMonth.AddSeconds(-1.0));
+        }
 
         public static TimeEntryQuery operator |(TimeEntryQuery left, TimeEntryQuery right) =>
             new(left._current || right._current,
@@ -47,7 +64,7 @@ namespace Toggl.Track.SDK.Queries
             {
                 var since = _since ?? DateTimeOffset.MinValue;
                 var before = _before ?? DateTimeOffset.MaxValue;
-                var minimum = DateTimeOffset.Now.AddDays(-90.0);
+                var minimum = DateTimeOffset.Now.AddMonths(-3);
                 if (since < minimum)
                     since = minimum;
                 builder

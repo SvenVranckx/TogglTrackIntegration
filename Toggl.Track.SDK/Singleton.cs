@@ -1,4 +1,6 @@
-﻿namespace Toggl.Track.SDK
+﻿using System.Diagnostics;
+
+namespace Toggl.Track.SDK
 {
     public interface ISingleton<TEntity, TQuery>
         where TEntity : class
@@ -29,6 +31,7 @@
         {
         }
 
+        [DebuggerStepThrough]
         private IQuery<TEntity> QueryOrDefault(TQuery? query) => query ?? _defaultQuery;
 
         public async Task<TEntity?> Get(TQuery? query = null) =>

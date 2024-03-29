@@ -52,10 +52,16 @@ namespace Toggl.Track.SDK.Test.Queries
         }
 
         [Fact]
-        public async Task GetEntriesLastWeek()
+        public async Task GetEntriesLastMonth()
+        {            
+            var entries = await Context.TimeEntries.Collect(TimeEntryQuery.LastMonth);
+            Assert.NotNull(entries);
+        }
+
+        [Fact]
+        public async Task GetEntriesThisMonth()
         {
-            var lastWeek = DateTimeOffset.Now.AddDays(-7);
-            var entries = await Context.TimeEntries.Collect(TimeEntryQuery.Since(lastWeek));
+            var entries = await Context.TimeEntries.Collect(TimeEntryQuery.ThisMonth);
             Assert.NotNull(entries);
             entries.Should().NotBeEmpty();
         }
