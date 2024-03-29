@@ -1,10 +1,10 @@
 ﻿namespace Toggl.Track.SDK.Test
 {
-    public class ContextTests : IDisposable
+    public class ContextFixture : IDisposable
     {
         private bool _disposed;
 
-        public ContextTests()
+        public ContextFixture()
         {
             Context = new ApiContext(Secrets.ApiToken);
         }
@@ -17,6 +17,6 @@
             Context.Dispose();
         }
 
-        protected ApiContext Context { get; }
+        public ApiContext Context { get; }
     }
 }

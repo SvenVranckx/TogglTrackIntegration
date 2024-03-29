@@ -1,10 +1,14 @@
 using FluentAssertions;
 using Toggl.Track.SDK.Queries;
 
-namespace Toggl.Track.SDK.Test.Tests
+namespace Toggl.Track.SDK.Test.Queries
 {
-    public class UserTests : ContextTests
+    public class UserTests : IClassFixture<ContextFixture>
     {
+        public UserTests(ContextFixture fixture) { Context = fixture.Context; }
+
+        protected ApiContext Context { get; }
+
         [Fact]
         public async Task GetMe()
         {
@@ -23,6 +27,14 @@ namespace Toggl.Track.SDK.Test.Tests
             me.Email.Should().NotBeNull();
             me.Workspaces.Should().NotBeEmpty();
             me.Projects.Should().NotBeEmpty();
+        }
+
+        [Fact]
+        public async Task GetPreferences()
+        {
+            var preferences = await Context.Preferences.Get();
+            Assert.NotNull(preferences);
+            preferences.AlphaFeatures.Should().NotBeEmpty();
         }
     }
 }
