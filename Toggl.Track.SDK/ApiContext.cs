@@ -20,7 +20,7 @@ namespace Toggl.Track.SDK
             Preferences = Singleton.Create<Preferences>(_client, "me/preferences");
             Organizations = Repository.Create<Organization>(_client, "me/organizations");
             Workspaces = Repository.Create<Workspace>(_client, "workspaces");
-            Clients = Repository.Create<Client>(_client, "me/clients");
+            Clients = Repository.Create<Client, ClientQuery>(_client);
             Projects = Repository.Create<Project, ProjectQuery>(_client);
             Tasks = Repository.Create<Task>(_client, "me/tasks");
             Tags = Repository.Create<Tag>(_client, "me/tags");
@@ -32,7 +32,7 @@ namespace Toggl.Track.SDK
 
         public IRepository<Organization> Organizations { get; }
         public IRepository<Workspace> Workspaces { get; }
-        public IRepository<Client> Clients { get; }
+        public IRepository<Client, ClientQuery> Clients { get; }
         public IRepository<Project, ProjectQuery> Projects { get; }
         public IRepository<Task> Tasks { get; }
         public IRepository<Tag> Tags { get; }
