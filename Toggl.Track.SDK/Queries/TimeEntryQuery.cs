@@ -7,28 +7,57 @@ namespace Toggl.Track.SDK.Queries
         private readonly bool _current;
         private readonly bool _meta;
         private readonly bool _includeSharing;
+        private readonly DateTimeOffset? _since;
+        private readonly DateTimeOffset? _before;
 
-        public TimeEntryQuery() : this(false, false, false) { }
+        public TimeEntryQuery() : this(false, false, false, null, null)
+        { }
 
-        public TimeEntryQuery(bool current, bool withMetaEntities, bool includeSharing) : base("me/time_entries")
+        public TimeEntryQuery(bool current = false, bool withMetaEntities = false, bool includeSharing = false, DateTimeOffset? since = null, DateTimeOffset? before = null) :
+            base("me/time_entries")
         {
             _current = current;
             _meta = withMetaEntities;
             _includeSharing = includeSharing;
+            _since = since;
+            _before = before;
         }
 
-        public static readonly TimeEntryQuery Current = new(true, false, false);
-        public static readonly TimeEntryQuery WithMetaEntities = new(false, true, false);
-        public static readonly TimeEntryQuery IncludeSharing = new(false, false, true);
+        public static readonly TimeEntryQuery Current = new(current: true);
+        public static readonly TimeEntryQuery WithMetaEntities = new(withMetaEntities: true);
+        public static readonly TimeEntryQuery IncludeSharing = new(includeSharing: true);
+
+        public static TimeEntryQuery Since(DateTimeOffset since) => new(since: since);
+        public static TimeEntryQuery Before(DateTimeOffset before) => new(before: before);
+        public static TimeEntryQuery Between(DateTimeOffset start, DateTimeOffset end) => new(since: start, before: end);
 
         public static TimeEntryQuery operator |(TimeEntryQuery left, TimeEntryQuery right) =>
             new(left._current || right._current,
                 left._meta || right._meta,
-                left._includeSharing || right._includeSharing);
+                left._includeSharing || right._includeSharing,
+                left._since ?? right._since,
+                left._before ?? right._before);
 
-        protected override OptionsBuilder Options(OptionsBuilder builder) => builder
-            .Add("meta", _meta)
-            .Add("include_sharing", _includeSharing);
+        protected override OptionsBuilder Options(OptionsBuilder builder)
+        {
+            builder
+                .Add("meta", _meta)
+                .Add("include_sharing", _includeSharing);
+            if (_since is not null || _before is not null)
+            {
+                var since = _since ?? DateTimeOffset.MinValue;
+                var before = _before ?? DateTimeOffset.MaxValue;
+                var minimum = DateTimeOffset.Now.AddDays(-90.0);
+                if (since < minimum)
+                    since = minimum;
+                builder
+                    .Add("start_date", RFC3339(since))
+                    .Add("end_date", RFC3339(before));
+            }
+            return builder;
+        }
+
+        private static string RFC3339(DateTimeOffset time) => time.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.00Z");
 
         protected override string Build()
         {

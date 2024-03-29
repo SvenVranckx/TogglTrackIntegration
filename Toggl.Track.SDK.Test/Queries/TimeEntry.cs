@@ -50,5 +50,14 @@ namespace Toggl.Track.SDK.Test.Queries
             entry.Description.Should().NotBeNullOrEmpty();
             entry.WorkspaceId.Should().NotBe(0);
         }
+
+        [Fact]
+        public async Task GetEntriesLastWeek()
+        {
+            var lastWeek = DateTimeOffset.Now.AddDays(-7);
+            var entries = await Context.TimeEntries.Collect(TimeEntryQuery.Since(lastWeek));
+            Assert.NotNull(entries);
+            entries.Should().NotBeEmpty();
+        }
     }
 }
