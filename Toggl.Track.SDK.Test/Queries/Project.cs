@@ -20,7 +20,7 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetProjectsByWorkspace()
         {
-            var workspace = (await Context.Workspaces.Collect()).First();
+            var workspace = await Context.Workspaces.First();
             var projects = await Context.Projects.Collect(ProjectQuery.ByWorkspace(workspace));
             Assert.NotNull(projects);
             projects.Should().NotBeEmpty();
@@ -29,7 +29,7 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetProjectsByClient()
         {
-            var client = (await Context.Clients.Collect()).First();
+            var client = await Context.Clients.First();
             var projects = await Context.Projects.Collect(ProjectQuery.ByClient(client));
             Assert.NotNull(projects);
             projects.Should().NotBeEmpty();
@@ -39,7 +39,7 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetProjectsByClients()
         {
-            var workspace = (await Context.Workspaces.Collect()).First();
+            var workspace = await Context.Workspaces.First();
             var clients = (await  Context.Clients.Collect()).Where(c => c.WorkspaceId == workspace.Id).ToArray();
             var clientIds = new HashSet<long>(clients.Select(c => c.Id));
             var projects = await Context.Projects.Collect(ProjectQuery.ByClients(workspace, clients));

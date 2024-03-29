@@ -73,4 +73,59 @@ namespace Toggl.Track.SDK
             return new Repository<TEntity, TQuery>(client, new TQuery());
         }
     }
+
+    public static class RepositoryExtensions
+    {
+        public static async Task<TEntity> Single<TEntity, TQuery>(this IRepository<TEntity, TQuery> repository, TQuery? query = null)
+            where TEntity : class
+            where TQuery : class, IQuery<TEntity>, new()
+        {
+            return (await repository.Collect(query)).Single();
+        }
+
+        public static async Task<TEntity?> SingleOrDefault<TEntity, TQuery>(this IRepository<TEntity, TQuery> repository, TQuery? query = null)
+            where TEntity : class
+            where TQuery : class, IQuery<TEntity>, new()
+        {
+            return (await repository.Collect(query)).SingleOrDefault();
+        }
+
+        public static async Task<TEntity> First<TEntity, TQuery>(this IRepository<TEntity, TQuery> repository, TQuery? query = null)
+            where TEntity : class
+            where TQuery : class, IQuery<TEntity>, new()
+        {
+            return (await repository.Collect(query)).First();
+        }
+
+        public static async Task<TEntity?> FirstOrDefault<TEntity, TQuery>(this IRepository<TEntity, TQuery> repository, TQuery? query = null)
+            where TEntity : class
+            where TQuery : class, IQuery<TEntity>, new()
+        {
+            return (await repository.Collect(query)).FirstOrDefault();
+        }
+
+        public static async Task<TEntity> Single<TEntity>(this IRepository<TEntity> repository)
+            where TEntity : class
+        {
+            return (await repository.Collect()).Single();
+        }
+
+        public static async Task<TEntity?> SingleOrDefault<TEntity>(this IRepository<TEntity> repository)
+            where TEntity : class
+        {
+            return (await repository.Collect()).SingleOrDefault();
+        }
+
+        public static async Task<TEntity> First<TEntity>(this IRepository<TEntity> repository)
+            where TEntity : class
+        {
+            return (await repository.Collect()).First();
+        }
+
+        public static async Task<TEntity?> FirstOrDefault<TEntity>(this IRepository<TEntity> repository)
+            where TEntity : class
+        {
+            return (await repository.Collect()).FirstOrDefault();
+        }
+    }
 }
