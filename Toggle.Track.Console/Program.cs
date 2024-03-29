@@ -32,7 +32,7 @@ namespace Toggle.Track
             var tags = await context.Tags.Get();
             Console.WriteLine(tags.Length);
 
-            var entries = await context.TimeEntries.Get();
+            var entries = await context.TimeEntries.Get(TimeEntryOptions.WithMetaEntities | TimeEntryOptions.IncludeSharing);
             Console.WriteLine(entries.Length);
         }
 

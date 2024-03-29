@@ -20,7 +20,7 @@ namespace Toggle.Track.SDK
             Projects = new Repository<Project, DefaultOptions>(_client, "me/projects");
             Tasks = new Repository<Task, DefaultOptions>(_client, "me/tasks");
             Tags = new Repository<Tag, DefaultOptions>(_client, "me/tags");
-            TimeEntries = new Repository<TimeEntry, DefaultOptions>(_client, "me/time_entries");
+            TimeEntries = new Repository<TimeEntry, TimeEntryOptions>(_client, "me/time_entries");
         }
 
         public ISingleton<User, UserOptions> Me { get; }
@@ -32,7 +32,7 @@ namespace Toggle.Track.SDK
         public IRepository<Project, DefaultOptions> Projects { get; }
         public IRepository<Task, DefaultOptions> Tasks { get; }
         public IRepository<Tag, DefaultOptions> Tags { get; }
-        public IRepository<TimeEntry, DefaultOptions> TimeEntries { get; }
+        public IRepository<TimeEntry, TimeEntryOptions> TimeEntries { get; }
 
         public void Dispose()
         {
