@@ -2,7 +2,7 @@
 using Toggl.Track.SDK;
 using Toggl.Track.SDK.Queries;
 
-namespace Toggl.Track
+namespace Toggl.Track.Interactive
 {
     public class Program
     {
