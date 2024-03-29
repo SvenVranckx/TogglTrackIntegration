@@ -11,7 +11,7 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetProjects()
         {
-            var projects = await Context.Projects.Get();
+            var projects = await Context.Projects.Collect();
             Assert.NotNull(projects);
             projects.Should().NotBeEmpty();
         }

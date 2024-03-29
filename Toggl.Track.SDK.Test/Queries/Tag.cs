@@ -11,7 +11,7 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetTags()
         {
-            var tags = await Context.Tags.Get();
+            var tags = await Context.Tags.Collect();
             Assert.NotNull(tags);
             tags.Should().NotBeEmpty();
         }

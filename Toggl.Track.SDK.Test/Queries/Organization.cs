@@ -11,7 +11,7 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetOrganizations()
         {
-            var organizations = await Context.Organizations.Get();
+            var organizations = await Context.Organizations.Collect();
             Assert.NotNull(organizations);
             organizations.Should().NotBeEmpty();
         }

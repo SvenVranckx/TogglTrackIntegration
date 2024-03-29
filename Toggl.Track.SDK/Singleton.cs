@@ -32,7 +32,7 @@
         private IQuery<TEntity> QueryOrDefault(TQuery? query) => query ?? _defaultQuery;
 
         public async Task<TEntity?> Get(TQuery? query = null) =>
-            await QueryOrDefault(query).GetSingleton(_client);
+            await QueryOrDefault(query).GetEntity(_client);
     }
 
     internal class Singleton<TEntity> : Singleton<TEntity, Query<TEntity>>, ISingleton<TEntity>

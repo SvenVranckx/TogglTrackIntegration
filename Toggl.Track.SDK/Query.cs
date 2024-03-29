@@ -2,7 +2,7 @@
 {
     public interface IQuery<T>
     {
-        Task<T?> GetSingleton(IClient client);
+        Task<T?> GetEntity(IClient client);
         Task<T?> GetEntity(IClient client, long id);
         Task<T[]> GetEntities(IClient client);                
     }
@@ -16,7 +16,7 @@
             _path = path;
         }
 
-        public async Task<T?> GetSingleton(IClient client) =>
+        public async Task<T?> GetEntity(IClient client) =>
             await client.GetEntity<T>(Build());
 
         public async Task<T?> GetEntity(IClient client, long id) =>

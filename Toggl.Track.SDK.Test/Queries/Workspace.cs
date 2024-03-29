@@ -11,7 +11,7 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetWorkspaces()
         {
-            var workspaces = await Context.Workspaces.Get();
+            var workspaces = await Context.Workspaces.Collect();
             Assert.NotNull(workspaces);
             workspaces.Should().NotBeEmpty();
         }

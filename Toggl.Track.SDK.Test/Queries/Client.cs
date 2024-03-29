@@ -11,7 +11,7 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetClients()
         {
-            var clients = await Context.Clients.Get();
+            var clients = await Context.Clients.Collect();
             Assert.NotNull(clients);
             clients.Should().NotBeEmpty();
         }

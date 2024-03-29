@@ -12,14 +12,14 @@ namespace Toggl.Track.SDK.Test.Queries
         [Fact]
         public async Task GetEntries()
         {
-            var entries = await Context.TimeEntries.Get();
+            var entries = await Context.TimeEntries.Collect();
             Assert.NotNull(entries);
         }
 
         [Fact]
         public async Task GetEntriesWithMetaAndSharing()
         {
-            var entries = await Context.TimeEntries.Get(TimeEntryQuery.WithMetaEntities | TimeEntryQuery.IncludeSharing);
+            var entries = await Context.TimeEntries.Collect(TimeEntryQuery.WithMetaEntities | TimeEntryQuery.IncludeSharing);
             Assert.NotNull(entries);
             entries.Should().NotBeEmpty();
         }

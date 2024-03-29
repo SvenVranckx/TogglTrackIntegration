@@ -5,7 +5,8 @@
         where TQuery : class, IQuery<TEntity>
     {
         Task<TEntity?> Get(long id, TQuery? query = null);
-        Task<TEntity[]> Get(TQuery? query = null);
+        Task<TEntity?> Get(TQuery query);
+        Task<TEntity[]> Collect(TQuery? query = null);
     }
 
     public interface IRepository<TEntity> : IRepository<TEntity, Query<TEntity>>
@@ -35,7 +36,10 @@
         public async Task<TEntity?> Get(long id, TQuery? query = null) =>
             await QueryOrDefault(query).GetEntity(_client, id);
 
-        public async Task<TEntity[]> Get(TQuery? query = null) =>
+        public async Task<TEntity?> Get(TQuery query) =>
+            await QueryOrDefault(query).GetEntity(_client);
+
+        public async Task<TEntity[]> Collect(TQuery? query = null) =>
             await QueryOrDefault(query).GetEntities(_client);
     }
 
