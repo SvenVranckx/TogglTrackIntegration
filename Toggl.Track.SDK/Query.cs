@@ -9,11 +9,11 @@
 
     public class Query<T> : IQuery<T>
     {
-        private readonly string _path;
+        protected readonly string Path;
 
         public Query(string path)
         {
-            _path = path;
+            Path = path;
         }
 
         public async Task<T?> GetEntity(IClient client) =>
@@ -25,10 +25,10 @@
         public async Task<T[]> GetEntities(IClient client) =>
             await client.GetEntities<T>(Build());
 
-        protected virtual string Build() => ApplyOptions(_path);
-        protected virtual string Build(long id) => ApplyOptions($"{_path}/{id}");
+        protected virtual string Build() => ApplyOptions(Path);
+        protected virtual string Build(long id) => ApplyOptions($"{Path}/{id}");
 
-        private string ApplyOptions(string query)
+        protected string ApplyOptions(string query)
         {
             var builder = new OptionsBuilder();
             var options = Options(builder).ToString();
