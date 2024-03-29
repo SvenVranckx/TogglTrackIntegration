@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Toggl.Track.SDK;
-using Toggl.Track.SDK.Options;
+using Toggl.Track.SDK.Queries;
 
 namespace Toggl.Track
 {
@@ -11,7 +11,7 @@ namespace Toggl.Track
             var token = GetApiToken();
             using var context = new ApiContext(token!);
 
-            var me = await context.Me.Get(UserOptions.WithRelatedData);
+            var me = await context.Me.Get(UserQuery.WithRelatedData);
             Console.WriteLine(me?.FullName);
 
             var preferences = await context.Preferences.Get();
@@ -32,7 +32,7 @@ namespace Toggl.Track
             var tags = await context.Tags.Get();
             Console.WriteLine(tags.Length);
 
-            var entries = await context.TimeEntries.Get(TimeEntryOptions.WithMetaEntities | TimeEntryOptions.IncludeSharing);
+            var entries = await context.TimeEntries.Get(TimeEntryQuery.WithMetaEntities | TimeEntryQuery.IncludeSharing);
             Console.WriteLine(entries.Length);
         }
 

@@ -1,5 +1,5 @@
 using FluentAssertions;
-using Toggl.Track.SDK.Options;
+using Toggl.Track.SDK.Queries;
 
 namespace Toggl.Track.SDK.Test.Tests
 {
@@ -17,7 +17,7 @@ namespace Toggl.Track.SDK.Test.Tests
         [Fact]
         public async Task GetMeWithRelatedData()
         {
-            var me = await Context.Me.Get(UserOptions.WithRelatedData);
+            var me = await Context.Me.Get(UserQuery.WithRelatedData);
             Assert.NotNull(me);
             me.FullName.Should().NotBeNull();
             me.Email.Should().NotBeNull();

@@ -1,38 +1,69 @@
 ﻿namespace Toggl.Track.SDK
 {
-    public interface IRepository<TEntity, TOptions>
+    public interface IRepository<TEntity, TQuery>
         where TEntity : class
-        where TOptions : class, IQueryOptions
+        where TQuery : class, IQuery<TEntity>
     {
-        Task<TEntity?> Get(long id, TOptions? options = null);
-        Task<TEntity[]> Get(TOptions? options = null);
+        Task<TEntity?> Get(long id, TQuery? query = null);
+        Task<TEntity[]> Get(TQuery? query = null);
     }
 
-    internal class Repository<TEntity, TOptions> : IRepository<TEntity, TOptions>
+    public interface IRepository<TEntity> : IRepository<TEntity, Query<TEntity>>
         where TEntity : class
-        where TOptions : class, IQueryOptions
     {
-        private readonly ApiClient _client;
-        private readonly string _query;
+    }
 
-        internal Repository(ApiClient client, string query)
+    internal class Repository<TEntity, TQuery> : IRepository<TEntity, TQuery>
+        where TEntity : class
+        where TQuery : class, IQuery<TEntity>
+    {
+        private readonly IClient _client;
+        private readonly IQuery<TEntity> _defaultQuery;
+
+        internal Repository(IClient client, IQuery<TEntity> defaultQuery)
         {
             _client = client;
-            _query = query;
+            _defaultQuery = defaultQuery;
         }
 
-        public async Task<TEntity?> Get(long id, TOptions? options = null)
+        internal Repository(IClient client, string path) : this(client, new Query<TEntity>(path))
         {
-            var query = QueryOptions.Apply(options, _query, id);
-            var entity = await _client.GetEntity<TEntity>(query);
-            return entity;
         }
 
-        public async Task<TEntity[]> Get(TOptions? options = null)
+        private IQuery<TEntity> QueryOrDefault(TQuery? query) => query ?? _defaultQuery;
+
+        public async Task<TEntity?> Get(long id, TQuery? query = null) =>
+            await QueryOrDefault(query).GetEntity(_client, id);
+
+        public async Task<TEntity[]> Get(TQuery? query = null) =>
+            await QueryOrDefault(query).GetEntities(_client);
+    }
+
+    internal class Repository<TEntity> : Repository<TEntity, Query<TEntity>>, IRepository<TEntity>
+        where TEntity : class
+    {
+        internal Repository(IClient client, IQuery<TEntity> defaultQuery) : base(client, defaultQuery)
         {
-            var query = QueryOptions.Apply(options, _query);
-            var entities = await _client.GetEntities<TEntity>(query);
-            return entities;
+        }
+
+        internal Repository(IClient client, string path) : base(client, path)
+        {
+        }
+    }
+
+    internal static class Repository
+    {
+        internal static Repository<TEntity> Create<TEntity>(IClient client, string path)
+            where TEntity : class
+        {
+            return new Repository<TEntity>(client, path);
+        }
+
+        internal static Repository<TEntity, TQuery> Create<TEntity, TQuery>(IClient client)
+            where TEntity : class
+            where TQuery : class, IQuery<TEntity>, new()
+        {
+            return new Repository<TEntity, TQuery>(client, new TQuery());
         }
     }
 }

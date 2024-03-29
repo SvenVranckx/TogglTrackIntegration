@@ -1,38 +1,42 @@
 ﻿using Toggl.Track.SDK.Models;
-using Toggl.Track.SDK.Options;
+using Toggl.Track.SDK.Queries;
 using Task = Toggl.Track.SDK.Models.Task;
 
 namespace Toggl.Track.SDK
 {
     public class ApiContext : IDisposable
     {
-        private readonly ApiClient _client;
+        private readonly IClient _client;
         private bool _disposed;
 
-        public ApiContext(string apiToken)
+        public ApiContext(string apiToken) : this(new ApiClient(apiToken))
         {
-            _client = new ApiClient(apiToken);
-            Me = new Singleton<User, UserOptions>(_client, "me");
-            Preferences = new Singleton<Preferences, DefaultOptions>(_client, "me/preferences");
-            Organizations = new Repository<Organization, DefaultOptions>(_client, "me/organizations");
-            Workspaces = new Repository<Workspace, DefaultOptions>(_client, "workspaces");
-            Clients = new Repository<Client, DefaultOptions>(_client, "me/clients");
-            Projects = new Repository<Project, DefaultOptions>(_client, "me/projects");
-            Tasks = new Repository<Task, DefaultOptions>(_client, "me/tasks");
-            Tags = new Repository<Tag, DefaultOptions>(_client, "me/tags");
-            TimeEntries = new Repository<TimeEntry, TimeEntryOptions>(_client, "me/time_entries");
         }
 
-        public ISingleton<User, UserOptions> Me { get; }
-        public ISingleton<Preferences, DefaultOptions> Preferences { get; }
+        public ApiContext(IClient client)
+        {
+            _client = client;
+            Me = Singleton.Create<User, UserQuery>(_client);
+            Preferences = Singleton.Create<Preferences>(_client, "me/preferences");
+            Organizations = Repository.Create<Organization>(_client, "me/organizations");
+            Workspaces = Repository.Create<Workspace>(_client, "workspaces");
+            Clients = Repository.Create<Client>(_client, "me/clients");
+            Projects = Repository.Create<Project>(_client, "me/projects");
+            Tasks = Repository.Create<Task>(_client, "me/tasks");
+            Tags = Repository.Create<Tag>(_client, "me/tags");
+            TimeEntries = Repository.Create<TimeEntry, TimeEntryQuery>(_client);
+        }
 
-        public IRepository<Organization, DefaultOptions> Organizations { get; }
-        public IRepository<Workspace, DefaultOptions> Workspaces { get; }
-        public IRepository<Client, DefaultOptions> Clients { get; }
-        public IRepository<Project, DefaultOptions> Projects { get; }
-        public IRepository<Task, DefaultOptions> Tasks { get; }
-        public IRepository<Tag, DefaultOptions> Tags { get; }
-        public IRepository<TimeEntry, TimeEntryOptions> TimeEntries { get; }
+        public ISingleton<User, UserQuery> Me { get; }
+        public ISingleton<Preferences> Preferences { get; }
+
+        public IRepository<Organization> Organizations { get; }
+        public IRepository<Workspace> Workspaces { get; }
+        public IRepository<Client> Clients { get; }
+        public IRepository<Project> Projects { get; }
+        public IRepository<Task> Tasks { get; }
+        public IRepository<Tag> Tags { get; }
+        public IRepository<TimeEntry, TimeEntryQuery> TimeEntries { get; }
 
         public void Dispose()
         {

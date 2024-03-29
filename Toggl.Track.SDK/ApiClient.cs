@@ -1,10 +1,17 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 
 namespace Toggl.Track.SDK
 {
-    internal class ApiClient : IDisposable
+    public interface IClient : IDisposable
+    {
+        Task<T?> GetEntity<T>(string query);
+        Task<T[]> GetEntities<T>(string query);
+    }
+
+    internal class ApiClient : IClient
     {
         private readonly HttpClient _httpClient;
         private bool _disposed;
