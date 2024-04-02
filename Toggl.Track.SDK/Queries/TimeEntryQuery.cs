@@ -68,8 +68,8 @@ namespace Toggl.Track.SDK.Queries
                 if (since < minimum)
                     since = minimum;
                 builder
-                    .Add("start_date", RFC3339(since))
-                    .Add("end_date", RFC3339(before));
+                    .Add("start_date", RFC3339(since.ToUniversalTime()))
+                    .Add("end_date", RFC3339(before.ToUniversalTime()));
             }
             return builder;
         }

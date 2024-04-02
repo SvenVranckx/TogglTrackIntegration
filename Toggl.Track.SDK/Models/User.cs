@@ -47,7 +47,7 @@ namespace Toggl.Track.SDK.Models
         public Tag[]? Tags { get; set; }
 
         [JsonPropertyName("tasks")]
-        public Task[]? Tasks { get; set; }
+        public ProjectTask[]? Tasks { get; set; }
 
         [JsonPropertyName("time_entries")]
         public TimeEntry[]? TimeEntries { get; set; }

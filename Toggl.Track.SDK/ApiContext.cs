@@ -1,6 +1,5 @@
 ﻿using Toggl.Track.SDK.Models;
 using Toggl.Track.SDK.Queries;
-using Task = Toggl.Track.SDK.Models.Task;
 
 namespace Toggl.Track.SDK
 {
@@ -22,7 +21,7 @@ namespace Toggl.Track.SDK
             Workspaces = Repository.Create<Workspace>(_client, "workspaces");
             Clients = Repository.Create<Client, ClientQuery>(_client);
             Projects = Repository.Create<Project, ProjectQuery>(_client);
-            Tasks = Repository.Create<Task>(_client, "me/tasks");
+            Tasks = Repository.Create<ProjectTask>(_client, "me/tasks");
             Tags = Repository.Create<Tag>(_client, "me/tags");
             TimeEntries = Repository.Create<TimeEntry, TimeEntryQuery>(_client);
         }
@@ -34,7 +33,7 @@ namespace Toggl.Track.SDK
         public IRepository<Workspace> Workspaces { get; }
         public IRepository<Client, ClientQuery> Clients { get; }
         public IRepository<Project, ProjectQuery> Projects { get; }
-        public IRepository<Task> Tasks { get; }
+        public IRepository<ProjectTask> Tasks { get; }
         public IRepository<Tag> Tags { get; }
         public IRepository<TimeEntry, TimeEntryQuery> TimeEntries { get; }
 

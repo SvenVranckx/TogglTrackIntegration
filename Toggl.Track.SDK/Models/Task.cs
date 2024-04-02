@@ -2,7 +2,7 @@
 
 namespace Toggl.Track.SDK.Models
 {
-    public class Task : ConfigurationEntity
+    public class ProjectTask : ConfigurationEntity
     {
         [JsonPropertyName("active")]
         public bool Active { get; set; }

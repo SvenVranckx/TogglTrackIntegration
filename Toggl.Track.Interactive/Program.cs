@@ -1,6 +1,4 @@
 ﻿using Microsoft.Extensions.Configuration;
-using Toggl.Track.SDK;
-using Toggl.Track.SDK.Queries;
 
 namespace Toggl.Track.Interactive
 {
@@ -9,17 +7,8 @@ namespace Toggl.Track.Interactive
         public static async Task Main()
         {
             var token = GetApiToken();
-            using var context = new ApiContext(token!);
-
-            var client = await context.Clients.Single(ClientQuery.Name("iNNOVATEQ"));
-            var projects = (await context.Projects.Collect(ProjectQuery.ByClient(client))).ToDictionary(p => p.Id);
-
-            var entries = await context.TimeEntries.Collect(TimeEntryQuery.ThisMonth);
-            var matching = entries
-                .Where(e => projects.ContainsKey(e.ProjectId ?? 0))
-                .ToArray();
-
-            await Task.CompletedTask;
+            using var session = new Session(token);
+            await session.Run();
         }
 
         private static string GetApiToken()
