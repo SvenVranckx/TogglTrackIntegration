@@ -84,7 +84,11 @@ namespace Toggl.Track.Interactive
                 .OrderBy(e => e.Start)
                 .ToArray();
 
-            const string path = @"C:\Users\Sven\OneDrive\Desktop\TimeEntries.csv";
+
+            var dialog = new FileDialog();
+            var path = dialog.Show();
+            if (string.IsNullOrEmpty(path))
+                return;
 
             using var output = new StreamWriter(path);
             var header = string.Join(separator, ["Date", "Project", "Description", "Type", "Duration", "Start", "Stop"]);

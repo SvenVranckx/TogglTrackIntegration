@@ -4,6 +4,7 @@ namespace Toggl.Track.Interactive
 {
     public class Program
     {
+        [STAThread]
         public static async Task Main()
         {
             var token = GetApiToken();
