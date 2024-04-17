@@ -30,7 +30,7 @@ namespace Toggl.Track.Interactive
                 using (Terminal.ForegroundColor.White)
                     _terminal.WriteLine(@"Please select a command");
                 _terminal.WriteLine();
-                _terminal.PrintOption(ConsoleKey.T, @"Export time entries (last month)");
+                _terminal.PrintOption(ConsoleKey.T, @"Export time entries");
                 _terminal.PrintOption(ConsoleKey.X, @"Exit");
 
                 var key = _terminal.ReadKey(true);
@@ -61,6 +61,8 @@ namespace Toggl.Track.Interactive
             }
         }
 
+        private enum Period { LastMonth, ThisMonth };
+
         private async Task ExportTimeEntries()
         {
             var clients = await _context.Clients.Collect();
@@ -72,18 +74,29 @@ namespace Toggl.Track.Interactive
                 return;
 
             _terminal.WriteLine();
+            var periods = new Period?[] { Period.LastMonth, Period.ThisMonth };
+            var period = _terminal.SelectOption("Please select a period", periods, Period.LastMonth, p => p?.ToString().Replace("Month", " month"));
+            if (period is null)
+                return;
+
+            _terminal.WriteLine();
             var separators = new[] { ",", ";" };
             var separator = _terminal.SelectOption("Please select a separator", separators, ",", s => s);
             if (separator is null)
                 return;
 
             var projects = (await _context.Projects.Collect(ProjectQuery.ByClient(client))).ToDictionary(p => p.Id);
-            var entries = await _context.TimeEntries.Collect(TimeEntryQuery.LastMonth);
+            TimeEntryQuery query = period.Value switch
+            {
+                Period.LastMonth => TimeEntryQuery.LastMonth,
+                Period.ThisMonth => TimeEntryQuery.ThisMonth,
+                _ => throw new InvalidOperationException(),
+            };
+            var entries = await _context.TimeEntries.Collect(query);
             var matching = entries
                 .Where(e => projects.ContainsKey(e.ProjectId ?? 0))
                 .OrderBy(e => e.Start)
                 .ToArray();
-
 
             var dialog = new FileDialog();
             var path = dialog.Show();
@@ -91,20 +104,22 @@ namespace Toggl.Track.Interactive
                 return;
 
             using var output = new StreamWriter(path);
-            var header = string.Join(separator, ["Date", "Project", "Description", "Type", "Duration", "Start", "Stop"]);
+            var header = string.Join(separator, ["Date", "Project", "Description", "Type", "Duration (m)", "Duration (h)", "Start", "Stop"]);
             _terminal.WriteLine();
             _terminal.WriteLine(header);
             output.WriteLine(header);
             foreach (var entry in matching)
             {
                 projects.TryGetValue(entry.ProjectId ?? 0, out var project);
+                var duration = TimeSpan.FromSeconds(entry.Duration);
                 var type = string.Join(" | ", entry.Tags ?? []);
                 var row = string.Join(separator,
                     entry.Start?.Date.ToString("dd/MM/yyy"),
                     project?.Name,
                     entry.Description,
                     type,
-                    TimeSpan.FromSeconds(entry.Duration).TotalMinutes,
+                    duration.TotalMinutes,
+                    duration.TotalHours,
                     entry.Start?.TimeOfDay,
                     entry.Stop?.TimeOfDay);
                 _terminal.WriteLine(row);
