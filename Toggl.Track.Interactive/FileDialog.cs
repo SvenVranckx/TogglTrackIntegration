@@ -31,6 +31,12 @@ namespace Toggl.Track.Interactive
         public int flagsEx;
     }
 
+    [Flags]
+    public enum OpenFileNameFlags
+    {
+        OFN_OVERWRITEPROMPT = 0x00000002
+    }
+
     public class FileDialog
     {
         // From https://www.pinvoke.net/default.aspx/comdlg32/GetOpenFileName.html
@@ -63,6 +69,7 @@ namespace Toggl.Track.Interactive
         public static string ShowSave(string title = "Save", string filter = "All Files (*.*)\0*.*\0")
         {
             var ofn = CreateRequest(title, filter);
+            ofn.Flags = (int)OpenFileNameFlags.OFN_OVERWRITEPROMPT;
             return GetSaveFileName(ref ofn) ? ofn.lpstrFile : string.Empty;
         }
     }

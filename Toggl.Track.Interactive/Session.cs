@@ -116,6 +116,8 @@ namespace Toggl.Track.Interactive
             if (separator is null)
                 return;
 
+            _terminal.WriteLine();
+            _terminal.WriteLine("Please select an output file");
             var path = FileDialog.ShowSave();
             if (string.IsNullOrEmpty(path))
                 return;
