@@ -116,8 +116,7 @@ namespace Toggl.Track.Interactive
             if (separator is null)
                 return;
 
-            var dialog = new FileDialog();
-            var path = dialog.Show();
+            var path = FileDialog.ShowSave();
             if (string.IsNullOrEmpty(path))
                 return;
 
