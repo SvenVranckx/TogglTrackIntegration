@@ -15,6 +15,7 @@
                 return;
             _disposed = true;
             Context.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public ApiContext Context { get; }

@@ -197,6 +197,7 @@
                     return;
                 _disposed = true;
                 Console.ForegroundColor = _previous;
+                GC.SuppressFinalize(this);
             }
 
             public static IDisposable Black => new ForegroundColor(ConsoleColor.Black);
@@ -226,12 +227,10 @@
             public void Dispose()
             {
                 if (_disposed)
-                {
                     return;
-                }
-
                 _disposed = true;
                 Console.BackgroundColor = _previous;
+                GC.SuppressFinalize(this);
             }
 
             public static IDisposable Black => new BackgroundColor(ConsoleColor.Black);

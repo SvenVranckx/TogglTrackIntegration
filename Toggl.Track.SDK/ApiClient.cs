@@ -39,6 +39,7 @@ namespace Toggl.Track.SDK
                 return;
             _disposed = true;
             _httpClient.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public async Task<T?> GetEntity<T>(string query)

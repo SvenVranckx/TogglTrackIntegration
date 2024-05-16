@@ -21,6 +21,7 @@ namespace Toggl.Track.Interactive
                 return;
             _disposed = true;
             _context.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public async Task Run()

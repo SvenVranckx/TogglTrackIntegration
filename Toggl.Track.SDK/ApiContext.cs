@@ -43,6 +43,7 @@ namespace Toggl.Track.SDK
                 return;
             _disposed = true;
             _client.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }
