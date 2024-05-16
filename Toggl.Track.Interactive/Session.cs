@@ -129,6 +129,7 @@ namespace Toggl.Track.Interactive
             _terminal.WriteLine("Fectching time entries...");
             var entries = await _context.TimeEntries.Collect(query);
             var matching = entries
+                .Where(e => e.Stop is not null)
                 .Where(e => projects.ContainsKey(e.ProjectId ?? 0))
                 .OrderBy(e => e.Start)
                 .ToArray();
@@ -176,6 +177,7 @@ namespace Toggl.Track.Interactive
             TimeEntryQuery query = GetTimeEntryQuery(period.Value);
             var entries = await _context.TimeEntries.Collect(query);
             var totalSeconds = entries
+                .Where(e => e.Stop is not null)
                 .Where(e => projects.Contains(e.ProjectId ?? 0))
                 .Select(e => e.Duration)
                 .Sum();
@@ -204,6 +206,7 @@ namespace Toggl.Track.Interactive
             TimeEntryQuery query = GetTimeEntryQuery(period.Value);
             var entries = await _context.TimeEntries.Collect(query);
             var grouped = entries
+                .Where(e => e.Stop is not null)
                 .Where(e => projects.Contains(e.ProjectId ?? 0))
                 .GroupBy(e => e.Start?.Date ?? DateTime.MinValue)
                 .OrderBy(g => g.Key);            
