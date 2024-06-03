@@ -12,6 +12,7 @@
         void PrintOption(ConsoleKey key, string description, bool highlight = false);
         T SelectOption<T>(string caption, IEnumerable<T> options, T current, Func<T, string?> labelOf);
         T SelectOptionWithPaging<T>(string caption, IReadOnlyCollection<T> options, T current, Func<T, string?> labelOf, int itemsPerPage);
+        DateTimeOffset? SelectDate(string prompt);
     }
 
     public class Option
@@ -27,6 +28,7 @@
         public void Write(string text) => Console.WriteLine(text);
         public void WriteLine(string text) => Console.WriteLine(text);
         public void WriteLine() => Console.WriteLine();
+        public string? ReadLine() => Console.ReadLine();
         public ConsoleKeyInfo ReadKey(bool intercept) => Console.ReadKey(intercept);
         public void PrintKey(ConsoleKey key) => Console.Write($"[{key}]");
 
@@ -174,6 +176,18 @@
                 if (keys.Contains(key.Key))
                     return key.Key;
             }
+        }
+
+        public DateTimeOffset? SelectDate(string prompt)
+        {
+            using (ForegroundColor.White)
+                Console.Write(prompt);
+            var input = Console.ReadLine();
+            if (string.IsNullOrEmpty(input))
+                return null;
+            if (!DateTime.TryParse(input, out var result))
+                return null;
+            return result;
         }
 
         /// <summary>

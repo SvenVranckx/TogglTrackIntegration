@@ -81,21 +81,38 @@ namespace Toggl.Track.Interactive
             return client;
         }
 
-        private enum Period { LastMonth, ThisMonth };
+        private enum Period { LastMonth, ThisMonth, LastWeek, ThisWeek, Custom };
 
         private Period? SelectPeriod()
         {
-            var periods = new Period?[] { Period.LastMonth, Period.ThisMonth };
-            var period = _terminal.SelectOption("Please select a period", periods, Period.LastMonth, p => p?.ToString().Replace("Month", " month"));
+            var periods = new Period?[] { Period.LastMonth, Period.ThisMonth, Period.LastWeek, Period.ThisWeek, Period.Custom };
+            var period = _terminal.SelectOption("Please select a period", periods, Period.LastMonth, p => p?.ToString()
+                .Replace("Month", " month")
+                .Replace("Week", " week"));
             return period;
         }
 
-        private TimeEntryQuery GetTimeEntryQuery(Period period)
+        private TimeEntryQuery? GetCustomPeriodQuery()
+        {
+            _terminal.WriteLine();
+            var start = _terminal.SelectDate("Enter start date: ");
+            if (start is null)
+                return null;
+            var end = _terminal.SelectDate("Enter end date: ");
+            if (end is null)
+                return null;
+            return TimeEntryQuery.Between(start.Value, end.Value);
+        }
+
+        private TimeEntryQuery? GetTimeEntryQuery(Period period)
         {
             return period switch
             {
                 Period.LastMonth => TimeEntryQuery.LastMonth,
                 Period.ThisMonth => TimeEntryQuery.ThisMonth,
+                Period.LastWeek => TimeEntryQuery.LastWeek,
+                Period.ThisWeek => TimeEntryQuery.ThisWeek,
+                Period.Custom => GetCustomPeriodQuery(),
                 _ => throw new InvalidOperationException(),
             };
         }
@@ -109,6 +126,9 @@ namespace Toggl.Track.Interactive
             _terminal.WriteLine();
             var period = SelectPeriod();
             if (period is null)
+                return;
+            TimeEntryQuery? query = GetTimeEntryQuery(period.Value);
+            if (query is null)
                 return;
 
             _terminal.WriteLine();
@@ -126,7 +146,6 @@ namespace Toggl.Track.Interactive
             _terminal.WriteLine();
             _terminal.WriteLine("Fectching projects...");
             var projects = (await _context.Projects.Collect(ProjectQuery.ByClient(client))).ToDictionary(p => p.Id);
-            TimeEntryQuery query = GetTimeEntryQuery(period.Value);
             _terminal.WriteLine("Fectching time entries...");
             var entries = await _context.TimeEntries.Collect(query);
             var matching = entries
@@ -170,12 +189,14 @@ namespace Toggl.Track.Interactive
             var period = SelectPeriod();
             if (period is null)
                 return;
+            TimeEntryQuery? query = GetTimeEntryQuery(period.Value);
+            if (query is null)
+                return;
 
             _terminal.WriteLine();
             _terminal.WriteLine("Fetching projects...");
             var projects = (await _context.Projects.Collect(ProjectQuery.ByClient(client))).Select(p => p.Id).ToHashSet();
             _terminal.WriteLine("Fetching time entries...");
-            TimeEntryQuery query = GetTimeEntryQuery(period.Value);
             var entries = await _context.TimeEntries.Collect(query);
             var totalSeconds = entries
                 .Where(e => e.Stop is not null)
@@ -199,12 +220,14 @@ namespace Toggl.Track.Interactive
             var period = SelectPeriod();
             if (period is null)
                 return;
+            TimeEntryQuery? query = GetTimeEntryQuery(period.Value);
+            if (query is null)
+                return;
 
             _terminal.WriteLine();
             _terminal.WriteLine("Fetching projects...");
             var projects = (await _context.Projects.Collect(ProjectQuery.ByClient(client))).Select(p => p.Id).ToHashSet();
             _terminal.WriteLine("Fetching time entries...");
-            TimeEntryQuery query = GetTimeEntryQuery(period.Value);
             var entries = await _context.TimeEntries.Collect(query);
             var grouped = entries
                 .Where(e => e.Stop is not null)

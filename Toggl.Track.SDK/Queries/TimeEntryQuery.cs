@@ -29,6 +29,8 @@ namespace Toggl.Track.SDK.Queries
 
         public static TimeEntryQuery LastMonth => PreviousMonth(DateTime.Today);
         public static TimeEntryQuery ThisMonth => CurrentMonth(DateTime.Today);
+        public static TimeEntryQuery LastWeek => PreviousWeek(DateTime.Today);
+        public static TimeEntryQuery ThisWeek => CurrentWeek(DateTime.Today);
 
         public static TimeEntryQuery Since(DateTimeOffset since) => new(since: since);
         public static TimeEntryQuery Before(DateTimeOffset before) => new(before: before);
@@ -47,6 +49,30 @@ namespace Toggl.Track.SDK.Queries
             var firstDayOfNextMonth = firstDayOfThisMonth.AddMonths(1);
             return new(since: firstDayOfThisMonth, before: firstDayOfNextMonth.AddSeconds(-1.0));
         }
+
+        public static TimeEntryQuery PreviousWeek(DateTime today)
+        {
+            var firstDayOfWeek = DayOfWeek.Monday;
+            var start = StartOfWeek(today, firstDayOfWeek).AddDays(-7);
+            var end = EndOfWeek(today, firstDayOfWeek).AddDays(-7);
+            return new(since: start, before: end);
+        }
+
+        public static TimeEntryQuery CurrentWeek(DateTime today)
+        {
+            var firstDayOfWeek = DayOfWeek.Monday;
+            var start = StartOfWeek(today, firstDayOfWeek);
+            var end = EndOfWeek(today, firstDayOfWeek);
+            return new(since: start, before: end);
+        }
+
+        private static DateTimeOffset StartOfWeek(DateTimeOffset time, DayOfWeek firstDayOfWeek)
+        {
+            int offset = (7 + (time.DayOfWeek - firstDayOfWeek)) % 7;
+            return time.Date.AddDays(-1 * offset);
+        }
+
+        private static DateTimeOffset EndOfWeek(DateTimeOffset time, DayOfWeek firstDayOfWeek) => StartOfWeek(time, firstDayOfWeek).AddDays(7);
 
         public static TimeEntryQuery operator |(TimeEntryQuery left, TimeEntryQuery right) =>
             new(left._current || right._current,
