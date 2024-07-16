@@ -242,7 +242,7 @@ namespace Toggl.Track.Interactive
                 var date = group.Key;
                 var totalSeconds = group.Select(e => e.Duration).Sum();
                 var total = TimeSpan.FromSeconds(totalSeconds);
-                _terminal.WriteLine($"Time written on {date.ToShortDateString(),10}: {total.TotalHours} hours | {total.TotalMinutes} minutes");
+                _terminal.WriteLine($"Time written on {date.ToShortDateString(),10}: {total.TotalHours} hours | {total.TotalMinutes} minutes ({8.0 - total.TotalHours} hours absence)");
                 monthlySeconds += totalSeconds;
             }
             
