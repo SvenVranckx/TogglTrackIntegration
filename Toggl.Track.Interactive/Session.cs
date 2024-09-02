@@ -138,15 +138,15 @@ namespace Toggl.Track.Interactive
                 return;
 
             _terminal.WriteLine();
-            _terminal.WriteLine("Please select an output file");
+            _terminal.WriteLine($"Please select an output file for {client} ({query})");
             var path = FileDialog.ShowSave();
             if (string.IsNullOrEmpty(path))
                 return;
 
             _terminal.WriteLine();
-            _terminal.WriteLine("Fectching projects...");
+            _terminal.WriteLine($"Fetching {client.Name} projects...");
             var projects = (await _context.Projects.Collect(ProjectQuery.ByClient(client))).ToDictionary(p => p.Id);
-            _terminal.WriteLine("Fectching time entries...");
+            _terminal.WriteLine($"Fetching {client.Name} time entries ({query})...");
             var entries = await _context.TimeEntries.Collect(query);
             var matching = entries
                 .Where(e => e.Stop is not null)
@@ -194,9 +194,9 @@ namespace Toggl.Track.Interactive
                 return;
 
             _terminal.WriteLine();
-            _terminal.WriteLine("Fetching projects...");
+            _terminal.WriteLine($"Fetching {client.Name} projects...");
             var projects = (await _context.Projects.Collect(ProjectQuery.ByClient(client))).Select(p => p.Id).ToHashSet();
-            _terminal.WriteLine("Fetching time entries...");
+            _terminal.WriteLine($"Fetching {client.Name} time entries... ({query})");
             var entries = await _context.TimeEntries.Collect(query);
             var totalSeconds = entries
                 .Where(e => e.Stop is not null)
@@ -225,9 +225,9 @@ namespace Toggl.Track.Interactive
                 return;
 
             _terminal.WriteLine();
-            _terminal.WriteLine("Fetching projects...");
+            _terminal.WriteLine($"Fetching {client.Name} projects...");
             var projects = (await _context.Projects.Collect(ProjectQuery.ByClient(client))).Select(p => p.Id).ToHashSet();
-            _terminal.WriteLine("Fetching time entries...");
+            _terminal.WriteLine($"Fetching {client.Name} time entries... ({query})");
             var entries = await _context.TimeEntries.Collect(query);
             var grouped = entries
                 .Where(e => e.Stop is not null)

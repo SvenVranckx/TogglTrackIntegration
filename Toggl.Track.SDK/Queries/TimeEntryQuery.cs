@@ -108,5 +108,7 @@ namespace Toggl.Track.SDK.Queries
                 return ApplyOptions($"{Path}/current");
             return ApplyOptions(Path);
         }
+
+        public override string ToString() => $"{_since:dd/MM/yyyy} - {_before:dd/MM/yyyy}";
     }
 }
