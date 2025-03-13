@@ -9,6 +9,6 @@ namespace Toggl.Track.SDK.Test
                 .AddUserSecrets<Secrets>()
                 .Build();
 
-        public static string ApiToken => _configuration["ApiToken"];
+        public static string ApiToken => _configuration["ApiToken"] ?? string.Empty;
     }
 }

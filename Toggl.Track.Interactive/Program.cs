@@ -18,7 +18,7 @@ namespace Toggl.Track.Interactive
                 .AddUserSecrets<Program>()
                 .Build();
             var token = configuration["ApiToken"];
-            return token;
+            return token ?? string.Empty;
         }
     }
 }
