@@ -6,6 +6,7 @@
         void Write(string text);
         void WriteLine(string text);
         void WriteLine();
+        string? ReadLine();
         ConsoleKeyInfo ReadKey(bool intercept);
         void PrintKey(ConsoleKey key);
         void PrintKeys(params ConsoleKey[] keys);
