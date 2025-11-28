@@ -206,7 +206,7 @@ namespace Toggl.Track.Interactive
             var total = TimeSpan.FromSeconds(totalSeconds);
 
             _terminal.WriteLine();
-            _terminal.WriteLine($"Total time written: {total.TotalHours} hours | {total.TotalMinutes} minutes");
+            _terminal.WriteLine($"Total time written: {total.TotalHours / 8.0} days | {total.TotalHours} hours | {total.TotalMinutes} minutes");
             _terminal.WriteLine();
         }
 
